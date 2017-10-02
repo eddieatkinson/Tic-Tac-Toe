@@ -3,6 +3,10 @@ h1{
 	font-size: 60px;
 }
 
+.btn{
+	margin-bottom: 12px;
+}
+
 #board{
 	max-width: 640px;
 	min-width: 320px;
@@ -26,4 +30,9 @@ h1{
 #message{
 	font-size: 40px;
 	min-height: 80px; /*makes it so the message does not change the spacing*/
+}
+
+.winning-square{
+	background-color: #0F0;
+	color: #F00;
 }
