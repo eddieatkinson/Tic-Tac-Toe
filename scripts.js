@@ -119,6 +119,7 @@ gameOn();
 
 
 reset.addEventListener('click', resetByUser);
+
 function resetByUser(event, winningCombo){
 	var validUserReset = true;
 	if(gameOver === false){
@@ -152,16 +153,9 @@ function resetByUser(event, winningCombo){
 		reset.innerHTML = 'Reset';
 		for (let i = 0; i < squares.length; i++){
 			squares[i].innerHTML = "-";
+			squares[i].classList.remove('winning-square');
 		}	
-		var winningSquares = document.getElementsByClassName('winning-square');
-		// console.log(winningSquares.length);
-		for (let i = 0; i < winningSquares.length; i++){
-			// console.log(winningSquares[i]);
-			winningSquares[i].classList.remove('winning-square');
-		}
 	gameOver = false;
-	// console.log("player 1 end: " + player1Squares);
-	// console.log("player 2 end: " + player2Squares);
 	gameOn();
 	}
 }	
