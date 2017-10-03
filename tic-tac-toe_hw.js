@@ -13,11 +13,24 @@ var allWinningDiags = [];
 allWinningDiags[0] = [];
 allWinningDiags[1] = [];
 var sideLength = prompt("How many squares wide would you like?");
-var numWaysToWin = (sideLength * 2) + 2;
+// var numWaysToWin = (sideLength * 2) + 2;
 var playingBoard;
 
 var squares = document.getElementsByClassName('square');
 // var numPlayers = prompt("Would you like 1 or 2 players (please enter a number)? ");
+
+// ---Board-building---
+document.getElementById('board').innerHTML = fillBoard(sideLength);
+function fillBoard(sideLength){
+	for (let i = 0; i < sideLength; i++){
+		playingBoard += '<div class="board-row">';
+		for (let j = 0; j < sideLength; j++){
+			playingBoard +=`<button id="${j}${i}" class="square" style='width:${185*3/sideLength}px; height:${185*3/sideLength}px'>-</button>`;
+		}
+		playingBoard += '</div>';
+	}
+	return playingBoard;
+}
 
 function markSquare(squareClicked){
 	if(squareClicked.innerHTML !== "-"){
@@ -43,8 +56,9 @@ function markSquare(squareClicked){
 function endGame(winningCombo, playerNum){
 	document.getElementById('message').innerHTML = `Congratulations to Player ${playerNum}!`;
 	gameOver = true; 
-	for(let i = 0; i < winningCombo.length; i++){
+	for(let i = 0; i < sideLength; i++){
 		var theSquare = document.getElementById(winningCombo[i]);
+		console.log(theSquare);
 		theSquare.className += ' winning-square';
 	}
 	reset.innerHTML = 'Play again?';
@@ -138,33 +152,25 @@ for (let i = (sideLength - 1); i >= 0; i--){
 	}
 }
 var allWinningCombos = allWinningRows.concat(allWinningColumns, allWinningDiags);
-// console.log(allWinningCombos);
+console.log(allWinningCombos);
 
-// ---Board-building---
-document.getElementById('board').innerHTML = fillBoard(sideLength);
-function fillBoard(sideLength){
-	for (let i = 0; i < sideLength; i++){
-		playingBoard += '<div class="board-row">';
-		for (let j = 0; j < sideLength; j++){
-			playingBoard +=`<button id="${j}${i}" class="square" style='width:${185*3/sideLength}px; height:${185*3/sideLength}px'>-</button>`;
-		}
-		playingBoard += '</div>';
-	}
-	return playingBoard;
-}
+
 
 
 function checkWin(currentPlayerSquares, playerNum){
-	for (let i = 0; i < winningCombos.length; i++){
+	for (let i = 0; i < allWinningCombos.length; i++){
 		var squareCount = 0;
-		for (let j = 0; j < winningCombos[i].length; j++){
-			var winningSquare = winningCombos[i][j];
+		for (let j = 0; j < allWinningCombos[i].length; j++){
+			var winningSquare = allWinningCombos[i][j];
 			if(currentPlayerSquares.indexOf(winningSquare) !== -1){
 				squareCount++;
+				// console.log(squareCount);
 			}
 		} 
-		if(squareCount === sideLength){
-			endGame(winningCombos[i], playerNum);
+		if(squareCount == sideLength){
+			console.log('winner!');
+			console.log(allWinningCombos[i]);
+			endGame(allWinningCombos[i], playerNum);
 			break;
 			
 		}
