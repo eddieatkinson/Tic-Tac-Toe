@@ -36,13 +36,18 @@ for (let i = 0; i < sideLength; i++){
 	var oCount = 0;
 	var xCount = 0;
 	var emptyCount = 0;
+	var availableSpace;
 	for (let j = 0; j < sideLength; j++){
 		if(document.getElementById(allWinningCombos[i][j]).innerHTML = '-'){
 			emptyCount++;
+			availableSpace = allWinningCombos[i][j];
 		}else if(document.getElementById(allWinningCombos[i][j]).innerHTML = 'O'){
 			oCount++;
 		}else{
 			xCount++;
 		}
 	}
+	if(oCount + emptyCount == sideLength){
+			markSquare(document.getElementById(availableSpace));
+		}
 }
