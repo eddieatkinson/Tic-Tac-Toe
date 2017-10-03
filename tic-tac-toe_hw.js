@@ -1,8 +1,10 @@
 var whosTurn = 1;
+var numPlayers = 1;
 var player1Squares = [];
 var player2Squares = [];
+var name = "Myself!";
 // var winningCombos = 
-var gameOver = false;
+var gameOver = true;
 var reset = document.getElementById('reset');
 var greatMoveMsg = "Great move!"
 var spotTakenMesg = "Sorry. That square is taken."
@@ -15,6 +17,7 @@ allWinningDiags[1] = [];
 var sideLength = prompt("How many squares wide would you like?");
 // var numWaysToWin = (sideLength * 2) + 2;
 var playingBoard;
+var scores = [0, 0];
 
 var squares = document.getElementsByClassName('square');
 // var numPlayers = prompt("Would you like 1 or 2 players (please enter a number)? ");
@@ -42,6 +45,9 @@ function markSquare(squareClicked){
 		whosTurn = 2;
 		player1Squares.push(squareClicked.id);
 		checkWin(player1Squares, 1);
+		if(numPlayers == 1 && !gameOver){
+			computerMove();
+		}
 	}else{
 		document.getElementById('message').innerHTML = greatMoveMsg;
 		squareClicked.innerHTML = 'O';
@@ -54,6 +60,11 @@ function markSquare(squareClicked){
 
 
 function endGame(winningCombo, playerNum){
+	if(playerNum == 1){
+		scores[0]++;
+	}else{
+		scores[1]++;
+	}
 	document.getElementById('message').innerHTML = `Congratulations to Player ${playerNum}!`;
 	gameOver = true; 
 	for(let i = 0; i < sideLength; i++){
@@ -63,6 +74,8 @@ function endGame(winningCombo, playerNum){
 	}
 	reset.innerHTML = 'Play again?';
 	reset.addEventListener('click', resetByUser);
+	document.getElementsByClassName('player1-score')[0].innerHTML = scores[0];
+	document.getElementsByClassName('player2-score')[0].innerHTML = scores[1];
 }
 
 
@@ -114,7 +127,6 @@ function resetByUser(event){
 		}
 		document.getElementById('message').innerHTML = "";
 		gameOver = false;
-		gameOn();
 	}
 }
 
@@ -176,3 +188,39 @@ function checkWin(currentPlayerSquares, playerNum){
 		}
 	}
 }
+
+function computerMove(){
+	// find a random square
+	// see if that square is empty
+	// if it is, send it to square
+	// if it's not, keep looking
+	var squareFound = false;
+	while(!squareFound){
+		rand = Math.floor(Math.random() * sideLength * sideLength);
+		var isTaken = squares[rand].innerHTML;
+		if(isTaken === '-'){
+			squareFound = true;
+		}
+	}
+	markSquare(squares[rand]);
+}
+
+document.getElementById('one-player').addEventListener('click', function(event){
+	// console.log("User has chosen a one player game")
+	gameOver = false;
+	numPlayers = 1;
+	var nameBox = document.getElementById('player-name');
+	if(nameBox.value !== ""){
+		name = nameBox.value
+	}
+});
+
+document.getElementById('two-player').addEventListener('click', function(event){
+	// console.log("User has chosen a two player game");
+	gameOver = false;
+	numPlayers = 2;
+	var nameBox = document.getElementById('player-name');
+	if(nameBox.value !== ""){
+		name = nameBox.value
+	}	
+});
