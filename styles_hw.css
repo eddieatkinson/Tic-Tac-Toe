@@ -18,8 +18,8 @@ h1{
 	background-color: #FFF;
 	border: 2px solid black;
 	outline: none; /*keeps the blue line from showing up on the squares*/
-	width: 185px;
-	height: 185px;
+	/*width: 185px;
+	height: 185px;*/
 	font-size: 60px;
 }
 

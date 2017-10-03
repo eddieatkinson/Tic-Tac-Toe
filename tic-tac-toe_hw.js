@@ -1,7 +1,7 @@
 var whosTurn = 1;
 var player1Squares = [];
 var player2Squares = [];
-var winningCombos = 
+// var winningCombos = 
 var gameOver = false;
 var reset = document.getElementById('reset');
 var greatMoveMsg = "Great move!"
@@ -146,7 +146,7 @@ function fillBoard(sideLength){
 	for (let i = 0; i < sideLength; i++){
 		playingBoard += '<div class="board-row">';
 		for (let j = 0; j < sideLength; j++){
-			playingBoard +=`<button id="${j}${i}" class="square">-</button>`;
+			playingBoard +=`<button id="${j}${i}" class="square" style='width:${100/sideLength}%; height:${100/sideLength}%'>-</button>`;
 		}
 		playingBoard += '</div>';
 	}
