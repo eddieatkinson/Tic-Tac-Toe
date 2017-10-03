@@ -1,10 +1,115 @@
+var whosTurn = 1;
+var player1Squares = [];
+var player2Squares = [];
+var winningCombos = 
+var gameOver = false;
+var reset = document.getElementById('reset');
+var greatMoveMsg = "Great move!"
+var spotTakenMesg = "Sorry. That square is taken."
+
 var allWinningRows = [];
 var allWinningColumns = [];
 var allWinningDiags = [];
 allWinningDiags[0] = [];
 allWinningDiags[1] = [];
 var sideLength = prompt("How many squares wide would you like?");
-var numWaysToWin = (sideLength * 2) + 2
+var numWaysToWin = (sideLength * 2) + 2;
+var playingBoard;
+
+var squares = document.getElementsByClassName('square');
+// var numPlayers = prompt("Would you like 1 or 2 players (please enter a number)? ");
+
+function markSquare(squareClicked){
+	if(squareClicked.innerHTML !== "-"){
+		document.getElementById('message').innerHTML = spotTakenMesg;
+		console.log(squareClicked.innerHTML);
+	}else if(whosTurn === 1){
+		document.getElementById('message').innerHTML = greatMoveMsg;
+		squareClicked.innerHTML = 'X';	
+		whosTurn = 2;
+		player1Squares.push(squareClicked.id);
+		checkWin(player1Squares, 1);
+	}else{
+		document.getElementById('message').innerHTML = greatMoveMsg;
+		squareClicked.innerHTML = 'O';
+		whosTurn = 1;
+		player2Squares.push(squareClicked.id);
+		checkWin(player2Squares, 2);
+	}
+}
+
+
+
+function endGame(winningCombo, playerNum){
+	document.getElementById('message').innerHTML = `Congratulations to Player ${playerNum}!`;
+	gameOver = true; 
+	for(let i = 0; i < winningCombo.length; i++){
+		var theSquare = document.getElementById(winningCombo[i]);
+		theSquare.className += ' winning-square';
+	}
+	reset.innerHTML = 'Play again?';
+	reset.addEventListener('click', resetByUser);
+}
+
+
+function gameOn(){
+	for (let i = 0; i < squares.length; i++){
+		squares[i].addEventListener('click', function(event){
+			if(!gameOver){
+				markSquare(this);
+			}
+		})
+	}
+}
+
+
+
+reset.addEventListener('click', resetByUser);
+
+function resetByUser(event){
+	var validUserReset = true;
+	if(gameOver === false){
+	var userReset = prompt("Are you sure you would like to reset the board ('y' or 'n')?");
+	if(userReset === null){ 
+		return;
+	}
+	while (validUserReset){
+		if(userReset == 'y'){
+			whosTurn = 1;
+			player1Squares = [];
+			player2Squares = [];
+			for (let i = 0; i < squares.length; i++){
+				squares[i].innerHTML = "-";
+			}
+			document.getElementById('message').innerHTML = "";
+			validUserReset = false;
+		}else if(userReset != 'n'){
+			userReset = prompt("Please choose 'y' or 'n'.");
+		}else{
+			validUserReset = false;
+		}
+	}
+	}else{
+		whosTurn = 1;
+		player1Squares = [];
+		player2Squares = [];
+		reset.innerHTML = 'Reset';
+		for (let i = 0; i < squares.length; i++){
+			squares[i].innerHTML = "-";
+			squares[i].classList.remove('winning-square');
+		}
+		document.getElementById('message').innerHTML = "";
+		gameOver = false;
+		gameOn();
+	}
+}
+
+gameOn();
+
+// ------WIN CHECKING------
+
+
+// ---Create winning array---
 for (let i = 0; i < sideLength; i++){
   allWinningRows[i] = [];
 	for (let j = 0; j < sideLength; j++){
@@ -33,25 +138,33 @@ for (let i = (sideLength - 1); i >= 0; i--){
 	}
 }
 var allWinningCombos = allWinningRows.concat(allWinningColumns, allWinningDiags);
-console.log(allWinningCombos);
+// console.log(allWinningCombos);
+
+// ---Board-building---
+document.getElementById('board').innerHTML = fillBoard(sideLength);
+function fillBoard(sideLength){
+	for (let i = 0; i < sideLength; i++){
+		playingBoard += '<div class="board-row">';
+		for (let j = 0; j < sideLength; j++){
+			playingBoard +=`<button id="${j}${i}" class="square">-</button>`;
+		}
+		playingBoard += '</div>';
+	}
+	return playingBoard;
+}
+
 
 function checkWin(currentPlayerSquares, playerNum){
-	// OUTTER LOOP - check each winning combination
-	for (let i = 0; i < allWinningCombos.length; i++){
-		// Keep track of how many of THIS winning combo the player has.
+	for (let i = 0; i < winningCombos.length; i++){
 		var squareCount = 0;
-		// INNER LOOP - check a square inside a winning combination
-		for (let j = 0; j < allWinningCombos[i].length; j++){
-			var winningSquare = allWinningCombos[i][j];
+		for (let j = 0; j < winningCombos[i].length; j++){
+			var winningSquare = winningCombos[i][j];
 			if(currentPlayerSquares.indexOf(winningSquare) !== -1){
-				// The square belongs to the player. We do not care where.
 				squareCount++;
 			}
-		} // end of j loop (row/diag/colum complete)
-		// check to see if the squareCount === 3
-		if(squareCount === 3){
-			// Move stuff to a function.
-			endGame(allWinningCombos[i], playerNum);
+		} 
+		if(squareCount === sideLength){
+			endGame(winningCombos[i], playerNum);
 			break;
 			
 		}

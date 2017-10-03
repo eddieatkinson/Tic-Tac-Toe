@@ -25,6 +25,11 @@ var winningCombos = [
 ];
 var gameOver = false;
 var reset = document.getElementById('reset');
+var greatMoveMsg = "Great move!"
+var spotTakenMesg = "Sorry. That square is taken."
+
+// squares is an array with 9 objects. Each object is the JS representation of the HTML
+var squares = document.getElementsByClassName('square');
 
 // Two things happen when someone clicks:
 // 1. We change the DOM (for the user).
@@ -34,16 +39,17 @@ function markSquare(squareClicked){
 	// console.log(squareClicked);
 	// console.log(squareClicked.innerHTML);
 	if(squareClicked.innerHTML !== "-"){
-		document.getElementById('message').innerHTML = "Sorry. That square is taken.";
+		document.getElementById('message').innerHTML = spotTakenMesg;
+		console.log(squareClicked.innerHTML);
 	}else if(whosTurn === 1){
-		document.getElementById('message').innerHTML = "Great move!";
+		document.getElementById('message').innerHTML = greatMoveMsg;
 		squareClicked.innerHTML = 'X';	
 		whosTurn = 2;
 		player1Squares.push(squareClicked.id);
 		checkWin(player1Squares, 1);
 		// console.log("player 1: " + player1Squares);
 	}else{
-		document.getElementById('message').innerHTML = "Great move!";
+		document.getElementById('message').innerHTML = greatMoveMsg;
 		squareClicked.innerHTML = 'O';
 		whosTurn = 1;
 		player2Squares.push(squareClicked.id);
@@ -90,8 +96,7 @@ function endGame(winningCombo, playerNum){
 	reset.addEventListener('click', resetByUser);
 }
 
-// squares is an array with 9 objects. Each object is the JS representation of the HTML
-var squares = document.getElementsByClassName('square');
+
 // console.log(squares[0]);
 // console.dir(squares[0]); // how JS sees it
 function gameOn(){
@@ -115,12 +120,12 @@ function gameOn(){
 		})
 	}
 }
-gameOn();
+
 
 
 reset.addEventListener('click', resetByUser);
 
-function resetByUser(event, winningCombo){
+function resetByUser(event){
 	var validUserReset = true;
 	if(gameOver === false){
 	var userReset = prompt("Are you sure you would like to reset the board ('y' or 'n')?");
@@ -138,6 +143,7 @@ function resetByUser(event, winningCombo){
 			for (let i = 0; i < squares.length; i++){
 				squares[i].innerHTML = "-";
 			}
+			document.getElementById('message').innerHTML = "";
 			validUserReset = false;
 		}else if(userReset != 'n'){
 			userReset = prompt("Please choose 'y' or 'n'.");
@@ -145,8 +151,7 @@ function resetByUser(event, winningCombo){
 			validUserReset = false;
 		}
 	}
-	}
-	else{
+	}else{
 		whosTurn = 1;
 		player1Squares = [];
 		player2Squares = [];
@@ -154,8 +159,11 @@ function resetByUser(event, winningCombo){
 		for (let i = 0; i < squares.length; i++){
 			squares[i].innerHTML = "-";
 			squares[i].classList.remove('winning-square');
-		}	
-	gameOver = false;
-	gameOn();
+		}
+		document.getElementById('message').innerHTML = "";
+		gameOver = false;
+		gameOn();
 	}
-}	
+}
+
+gameOn();	
