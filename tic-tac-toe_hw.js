@@ -3,7 +3,6 @@ var numPlayers = 1;
 var player1Squares = [];
 var player2Squares = [];
 var name = "Myself!";
-// var winningCombos = 
 var gameOver = true;
 var reset = document.getElementById('reset');
 var greatMoveMsg = "Great move!"
