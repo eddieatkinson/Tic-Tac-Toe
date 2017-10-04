@@ -38,7 +38,7 @@ function fillBoard(sideLength){
 function markSquare(squareClicked){
 	if(squareClicked.innerHTML !== "-"){
 		document.getElementById('message').innerHTML = spotTakenMesg;
-		console.log(squareClicked.innerHTML);
+		// console.log(squareClicked.innerHTML);
 	}else if(whosTurn === 1){
 		document.getElementById('message').innerHTML = greatMoveMsg;
 		squareClicked.innerHTML = 'X';	
@@ -69,7 +69,7 @@ function endGame(winningCombo, playerNum){
 	gameOver = true; 
 	for(let i = 0; i < sideLength; i++){
 		var theSquare = document.getElementById(winningCombo[i]);
-		console.log(theSquare);
+		// console.log(theSquare);
 		theSquare.className += ' winning-square';
 	}
 	reset.innerHTML = 'Play again?';
