@@ -58,7 +58,6 @@ function markSquare(squareClicked){
 }
 
 
-
 function endGame(winningCombo, playerNum){
 	if(playerNum == 1){
 		scores[0]++;
