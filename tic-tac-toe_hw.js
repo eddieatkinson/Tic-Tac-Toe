@@ -21,6 +21,7 @@ var scores = [0, 0];
 var squares = document.getElementsByClassName('square');
 // var numPlayers = prompt("Would you like 1 or 2 players (please enter a number)? ");
 
+
 // ---Board-building---
 document.getElementById('board').innerHTML = fillBoard(sideLength);
 function fillBoard(sideLength){
