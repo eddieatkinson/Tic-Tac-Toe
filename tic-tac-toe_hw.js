@@ -16,7 +16,7 @@ allWinningDiags[0] = [];
 allWinningDiags[1] = [];
 var sideLength = prompt("How many squares wide would you like?");
 // var numWaysToWin = (sideLength * 2) + 2;
-var playingBoard;
+var playingBoard = "";
 var scores = [0, 0];
 
 var squares = document.getElementsByClassName('square');
